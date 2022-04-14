@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -113,5 +114,16 @@ public class Wrapper {
 	  {
 		driver.get(x);
 	  }
+	/***********************************************************
+	 ClickByLocator 
+	 * @throws InterruptedException 
+	 ***********************************************************/
+	public void clickByLocator(By locat) throws InterruptedException 
+	{
+		Thread.sleep(3000);
+		driver.findElement(locat).click();
+		Thread.sleep(3000);
+	}
+	
 
 }
