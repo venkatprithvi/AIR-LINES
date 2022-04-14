@@ -17,15 +17,21 @@ public class Wrapper {
 	public static WebDriver driver;
 	Properties prop = new Properties();
 	
-	// Driver created for Chrome Browser and maximize the browser
+	/******************************************
+	 *  Driver created for Chrome Browser and maximize the browser 
+	 * ***************************************/
 	public void chromeBrowserLaunch() 
 	  {
+		
 		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver = new ChromeDriver();
+		 driver = new ChromeDriver();
 		driver.manage().window().maximize();
 	  }
 	
-	// Driver created for firefox Browser and maximize the browser
+	/****************************************
+	 *  Driver created for firefox Browser and maximize the browser
+	 * 
+	 * ***************************************/
 	public void firefoxBrowserLaunch() 
 	  {
 		WebDriverManager.firefoxdriver().setup();
@@ -33,7 +39,9 @@ public class Wrapper {
 		driver.manage().window().maximize();
 	  }
 	
-	// Driver created for edge Browser and maximize the browser
+	/***************************************
+	 *  Driver created for edge Browser and maximize the browser
+	 ****************************************/
 	public void edgeBrowserLaunch() 
 	  {
 		WebDriverManager.edgedriver().setup();
@@ -41,7 +49,9 @@ public class Wrapper {
 		driver.manage().window().maximize();
 	  }
 	
-	// Muilti browser Launch based on user selection chrome/firefox/edge
+	/*********************************************************************
+	 *  Muilti browser Launch based on user selection chrome/firefox/edge
+	 *********************************************************************/
 	public void multiBrowserLaunch(String browserName) 
 	  {
 		if(browserName.equalsIgnoreCase("chrome")) 
@@ -61,13 +71,21 @@ public class Wrapper {
 		}
 	  }
 	
+	/************************************************************
+	 * Browser Closing with time delay of 3 sec
+	 * @throws InterruptedException 
+	 * **********************************************************/
+	public void browserClosing() throws InterruptedException 
+	 {
+		Thread.sleep(3000);
+		//close - closes the current tab if it is the only tab it closes the browser
+		driver.close();
+		// kills the driver
+		driver.quit();
+	 }
 
-
-	/*********************************************************
+	/************************************************************
 	 *  to get read the data from Property file
-	 * @param path
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 ************************************************************/
 	public void loaddata_From_Prop_File(String path) throws FileNotFoundException,IOException 
 	{
@@ -79,21 +97,21 @@ public class Wrapper {
 	
 	/***********************************************************
 	 * get data from input stream file
-	 *****************************************************/
-	public String getdata_From_Fileinputstream(String key) throws IOException
+	 ***********************************************************/
+	public String getdata_from_prop(String key) throws IOException
 	{
 		String keyvalue = null;
 		keyvalue = prop.getProperty(key);
 		return keyvalue;
 		
 	}
-	
 	/***********************************************************
-	 * to open project main page url
-	 *****************************************************/
-	public void project_Main_Page_URL_Launch(String project_main_url) 
+	 * get data from input stream file
+	 * @return 
+	 ***********************************************************/
+	public void openingLangingPage(String x) 
 	  {
-		driver.get(project_main_url);
+		driver.get(x);
 	  }
 
 }
