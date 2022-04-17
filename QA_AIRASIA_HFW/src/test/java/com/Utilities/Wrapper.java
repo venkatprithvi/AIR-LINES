@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Properties;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -16,6 +17,22 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class Wrapper {
 	
 	public static WebDriver driver;
+	
+	public Wrapper() 
+	{
+	File screenShotPath = new File(".\\ScreenShots");
+	if(screenShotPath.exists()) 
+		{
+		System.out.println("ScreenShots folder is avilable");
+		}
+	else 
+		{
+		screenShotPath.mkdir();
+		System.out.println("ScreenShot folder is created");
+		}
+	}
+	
+	
 	Properties prop = new Properties();
 	
 	/******************************************
@@ -27,6 +44,7 @@ public class Wrapper {
 		WebDriverManager.chromedriver().setup();
 		 driver = new ChromeDriver();
 		driver.manage().window().maximize();
+		System.out.println("Chrome Browser launched and maximized");
 	  }
 	
 	/****************************************
@@ -38,6 +56,7 @@ public class Wrapper {
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxDriver driver = new FirefoxDriver();
 		driver.manage().window().maximize();
+		System.out.println("FireFox Browser launched and maximized");
 	  }
 	
 	/***************************************
@@ -48,6 +67,7 @@ public class Wrapper {
 		WebDriverManager.edgedriver().setup();
 		EdgeDriver driver = new EdgeDriver();
 		driver.manage().window().maximize();
+		System.out.println("Edge Browser launched and maximized");
 	  }
 	
 	/*********************************************************************
@@ -55,6 +75,7 @@ public class Wrapper {
 	 *********************************************************************/
 	public void multiBrowserLaunch(String browserName) 
 	  {
+		System.out.println("Choosing One in multibrowser");
 		if(browserName.equalsIgnoreCase("chrome")) 
 		{
 			chromeBrowserLaunch();
@@ -81,8 +102,7 @@ public class Wrapper {
 		Thread.sleep(3000);
 		//close - closes the current tab if it is the only tab it closes the browser
 		driver.close();
-		// kills the driver
-		driver.quit();
+		System.out.println("Browser closed and quit the driver");
 	 }
 
 	/************************************************************
@@ -94,6 +114,7 @@ public class Wrapper {
 		FileInputStream fileInput = null;
 		fileInput = new FileInputStream(file);
 		prop.load(fileInput);
+		System.out.println("loading properties file");
 	}
 	
 	/***********************************************************
@@ -110,20 +131,48 @@ public class Wrapper {
 	 * get data from input stream file
 	 * @return 
 	 ***********************************************************/
-	public void openingLangingPage(String x) 
+	public void UrlPageOpening(String x) 
 	  {
+		implicitWait(10);
 		driver.get(x);
 	  }
+		
+	
 	/***********************************************************
 	 ClickByLocator 
 	 * @throws InterruptedException 
 	 ***********************************************************/
 	public void clickByLocator(By locat) throws InterruptedException 
 	{
-		Thread.sleep(3000);
-		driver.findElement(locat).click();
-		Thread.sleep(3000);
+		WebElement element = driver.findElement(locat);
+		if(element.isDisplayed()) 
+		  {
+			System.out.println(locat+" : element is enabled"); 
+			if(element.isEnabled()) 
+			{
+				driver.findElement(locat).click();	
+				implicitWait(10);
+				System.out.println(locat+" : element clicked"); 
+			}
+			else 
+			{
+			System.out.println(locat+" : element is not enabled"); 
+			}
+		  }
+		else 
+		{
+		System.out.println(locat+" : element is not displayed"); 
+		}
 	}
 	
+	
+	/****************************************************************
+	 * Implicity wait
+	 * **************************************************************/
+	public void implicitWait(int time) 
+	 {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(time));
+		System.out.println("******ImplicitWait method used ******");
+	 }
 
 }
